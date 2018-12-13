@@ -13,18 +13,24 @@ RUN apk add --no-cache --virtual .build-deps ca-certificates curl \
  && mv /v2ray/v2ray-v$VER-linux-64/geoip.dat /v2ray/ \
  && mv /v2ray/v2ray-v$VER-linux-64/geosite.dat /v2ray/ \
  && chmod +x /v2ray/v2ray \
- && mm -rf v2ray.zip \
+ && rm -rf v2ray.zip \
  && rm -rf v2ray-v$VER-linux-64 \
  && chgrp -R 0 /v2ray \
  && chmod -R g+rwX /v2ray 
  
-ADD entrypoint.sh /entrypoint.sh
 
-RUN chmod +x /entrypoint.sh 
+
 
 #ENTRYPOINT /entrypoint.sh
 
-CMD /entrypoint.sh
-
-
-
+CMD cd /v2ray \
+ && echo -e -n "$CONFIG_JSON1" > config.json \
+ && echo -e -n "$PORT" >> config.json \
+ && echo -e -n "$CONFIG_JSON2" >> config.json \
+ && echo -e -n "$UUID" >> config.json \
+ && echo -e -n "$CONFIG_JSON3" >> config.json \
+ && if [ "$CERT_PEM" != "$KEY_PEM" ]; then \
+ && echo -e "$CERT_PEM" > cert.pem \
+ && echo -e "$KEY_PEM"  > key.pem \
+ && fi \
+ && ./v2ray \
