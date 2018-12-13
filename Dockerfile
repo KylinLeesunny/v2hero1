@@ -13,7 +13,7 @@ RUN apk add --no-cache --virtual .build-deps ca-certificates curl \
  && mv /v2ray/v2ray-v$VER-linux-64/geoip.dat /v2ray/ \
  && mv /v2ray/v2ray-v$VER-linux-64/geosite.dat /v2ray/ \
  && chmod +x /v2ray/v2ray \
- && rm -rf v2ray.zip \
+ && mm -rf v2ray.zip \
  && rm -rf v2ray-v$VER-linux-64 \
  && chgrp -R 0 /v2ray \
  && chmod -R g+rwX /v2ray 
